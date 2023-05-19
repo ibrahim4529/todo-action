@@ -83,5 +83,6 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /home/${{ secrets.USERNAME }}/todo-app/deployment
+            echo "ENV_HERE=TODO" > .env
             docker-compose pull
             docker-compose up -d
