@@ -72,7 +72,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
-          source: ./deployment/docker-compose.yaml
+          source: "deployment/docker-compose.yaml"
           target: /home/${{ secrets.USERNAME }}/todo-app
       - name: Docker Compose Up Using SSH action
         uses: appleboy/ssh-action@master
