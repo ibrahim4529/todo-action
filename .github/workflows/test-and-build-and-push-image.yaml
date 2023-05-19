@@ -11,9 +11,9 @@ jobs:
       matrix:
         include:
           - dockerfile: ./deployment/app/Dockerfile
-            image: ghcr.io/ibrahim4529/todo-action-server:latest
+            image: ghcr.io/ibrahim4529/todo-action-server
           - dockerfile: ./deployment/nginx/Dockerfile
-            image: ghcr.io/ibrahim4529/todo-action-nginx:latest
+            image: ghcr.io/ibrahim4529/todo-action-nginx
     permissions:
       contents: read
       packages: write
