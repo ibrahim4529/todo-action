@@ -22,20 +22,23 @@ jobs:
         uses: actions/checkout@v2
       - name: Set Build .env
         run: 'echo "ENV_HERE=TODO" > .env'
-      - name: Set up Python 3.10
+      - name: Set up Python 3.10 if is metrix dockerfile is ./deployment/app/Dockerfile
         uses: actions/setup-python@v4
         with:
           python-version: '3.10' 
+        if: matrix.dockerfile == './deployment/app/Dockerfile'
       - name: Install Pip Dependencies
         run: |
           pip install -r requirements.txt
         shell: bash
         working-directory: ./server_app
+        if: matrix.dockerfile == './deployment/app/Dockerfile'
       - name: Test Using Pytest
         run: |
           pytest
         shell: bash
         working-directory: ./server_app
+        if: matrix.dockerfile == './deployment/app/Dockerfile'
       - name: Login To Container Registry
         uses: docker/login-action@v1
         with:
