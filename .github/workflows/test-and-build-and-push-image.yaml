@@ -49,7 +49,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          env_vars: .env
           file: ${{ matrix.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
