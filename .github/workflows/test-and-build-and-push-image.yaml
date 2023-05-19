@@ -11,9 +11,10 @@ jobs:
       matrix:
         include:
           - dockerfile: ./deployment/app/Dockerfile
-            tag: ghcr.io/ibrahim4529/todo-action-server:latest
+            image: ghcr.io/ibrahim4529/todo-action-server
           - dockerfile: ./deployment/nginx/Dockerfile
-            tag: ghcr.io/ibrahim4529/todo-action-nginx:latest
+            image: ghcr.io/ibrahim4529/todo-action-nginx
+    
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
