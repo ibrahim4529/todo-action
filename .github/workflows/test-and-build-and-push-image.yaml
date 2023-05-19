@@ -1,0 +1,35 @@
+name: Deploy To Server VPS
+on:
+  push:
+    branches:
+      - main 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Set Build .env
+        run: 'echo "ENV_HERE=TODO" > .env'
+      - name: Install Pip Dependencies
+        run: |
+          pip -m pip install --upgrade pip
+          pip install -r requirements.txt
+        shell: bash
+        working-directory: ./server_app
+      - name: Test Using Pytest
+        run: |
+          pytest
+        shell: bash
+        working-directory: ./server_app
+      - name: Login To Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build And Push Docker Image
+        shell: bash
+        run: |
+          docker-compose build
+          docker-compose push
