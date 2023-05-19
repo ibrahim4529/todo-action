@@ -6,6 +6,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./deployment/app/Dockerfile
+            tag: ghcr.io/ibrahim4529/todo-action-server:latest
+          - dockerfile: ./deployment/nginx/Dockerfile
+            tag: ghcr.io/ibrahim4529/todo-action-nginx:latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -31,8 +42,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build And Push Docker Image
-        shell: bash
-        run: |
-          docker-compose build
-          docker-compose push
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ matrix.image }}
+      name: Build and push Docker images
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          env_vars: .env
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
