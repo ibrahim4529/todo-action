@@ -14,7 +14,9 @@ jobs:
             image: ghcr.io/ibrahim4529/todo-action-server
           - dockerfile: ./deployment/nginx/Dockerfile
             image: ghcr.io/ibrahim4529/todo-action-nginx
-    
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
