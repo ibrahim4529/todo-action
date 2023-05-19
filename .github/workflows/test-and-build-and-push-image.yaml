@@ -12,6 +12,7 @@ jobs:
         include:
           - dockerfile: ./deployment/app/Dockerfile
             image: ghcr.io/ibrahim4529/todo-action-server
+
           - dockerfile: ./deployment/nginx/Dockerfile
             image: ghcr.io/ibrahim4529/todo-action-nginx
     permissions:
@@ -64,15 +65,15 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Copy docker compose file using scp
+      - name: Copy docker compose file using scp action
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
-          source: docker-compose.yml
-          target: /home/${{ secrets.USERNAME }}/todo-app/docker-compose.yml
+          source: ./deployment/docker-compose.yaml
+          target: /home/${{ secrets.USERNAME }}/todo-app/docker-compose.yaml
       - name: Docker Compose Up Using SSH action
         uses: appleboy/ssh-action@master
         with:
